@@ -7,7 +7,7 @@
 
 
 	let items=["Dashboard", "Onboard Customer","Add Containers"];
-	let activeItem="Dashboard";
+	let activeItem="Onboard Customer";
 
 	console.log(activeItem);
 
@@ -23,7 +23,7 @@
 	{:else if activeItem === "Onboard Customer"}
 		<OnboardCustomer />
 	{:else if activeItem === "Add Containers"}
-	<AddContainers />
+		<AddContainers />
 	{/if}
 </main>
 <Footer/>
