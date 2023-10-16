@@ -1,43 +1,169 @@
 <script>
+    import Button from "../shared/Button.svelte";
+    import CustomerStores from "../stores/CustomerStores";
+    import { createEventDispatcher } from "svelte";
 
+    let dispatch = createEventDispatcher();
+    let valid=false;
+    let customer={
+        companyName:'', personIncharge:'',email:'',phoneNo:'',address:{
+            line1:'',line2:'',city:'',state:'',zipCode:'',country:''
+        }
+    }
+    let errors={
+        companyName:'', personIncharge:'',email:'',phoneNo:'',address:{
+            line1:'',line2:'',city:'',state:'',zipCode:'',country:''
+        }
+    }
+
+    const submitHandler=()=>{
+        valid = true;
+        // Validate Company name
+        if (customer.companyName.trim().length < 1){
+            valid=false;
+            errors.companyName = 'Company name cannot be empty';
+        }
+        else{
+            errors.companyName='';
+        }
+
+        // Validate Person name
+        if (customer.personIncharge.trim().length < 1){
+            valid=false;
+            errors.personIncharge = 'Name of person in-charge cannot be empty';
+        }
+        else{
+            errors.personIncharge='';
+        }
+
+        // Validate Emailid
+        if (customer.email.trim().length < 1){
+            valid=false;
+            errors.email = 'Email Id cannot be empty';
+        }
+        else{
+            errors.email='';
+        }
+
+        // Validate Phone
+        if (customer.phoneNo.length !== 10 || !/^\d+$/.test(customer.phoneNo)) {
+            valid = false;
+            errors.phoneNo = 'Phone number should contain exactly 10 digits';
+        } else {
+                errors.phoneNo = '';
+        }
+
+        // Validate zip code
+        if (customer.address.zipCode.length !== 6 || !/^\d+$/.test(customer.address.zipCode)) {
+            valid = false;
+            errors.address.zipCode = 'Zip Code should contain exactly 6 digits';
+        } else {
+                errors.address.zipCode = '';
+        }
+
+        // Validate line 1
+        if (customer.address.line1.trim().length < 1){
+            valid=false;
+            errors.address.line1 = 'Address line 1 cannot be empty';
+        }
+        else{
+            errors.address.line1='';
+        }
+
+        // Validate line 2
+        if (customer.address.line2.trim().length < 1){
+            valid=false;
+            errors.address.line2 = 'Address line 2 cannot be empty';
+        }
+        else{
+            errors.address.line2='';
+        }
+        // Validate city
+        if (customer.address.city.trim().length < 1){
+            valid=false;
+            errors.address.city = 'City cannot be empty';
+        }
+        else{
+            errors.address.city='';
+        }
+
+        // Validate state
+        if (customer.address.state.trim().length < 1){
+            valid=false;
+            errors.address.state = 'State cannot be empty';
+        }
+        else{
+            errors.address.state='';
+        }
+
+        // Validate country
+        if (customer.address.country.trim() === ""){
+            valid=false;
+            errors.address.country = 'Please choose a country';
+        }
+        else{
+            errors.address.country='';
+        }
+
+        // add new poll if valid true
+        if(valid){
+            let customerDetail={...customer};
+
+            //save poll to store
+            CustomerStores.update(currentCustomers=>{
+                console.log([customerDetail, ...currentCustomers]);
+                return [customerDetail, ...currentCustomers];
+            })
+            dispatch('add');
+        }
+    };
 </script>
 
 <div class="onboard-form">
     <h1>Onboard Customer</h1>
-    <form>
+    <form on:submit|preventDefault={submitHandler}>
         <div class="half-field left">
             <!-- svelte-ignore a11y-label-has-associated-control -->
-            <label>Customer Name</label>
-            <input type="text">
+            <label>Company Name</label>
+            <input type="text" bind:value={customer.companyName}>
+            <div class="error">{errors.companyName}</div>
         </div>
         <div class="half-field right">
             <!-- svelte-ignore a11y-label-has-associated-control -->
             <label>Person in-charge</label>
-            <input type="text">
+            <input type="text" bind:value={customer.personIncharge}>
+            <div class="error">{errors.personIncharge}</div>
         </div>
         <div class="half-field left">
             <label for="">Email id</label>
-            <input type="email">
+            <input type="email" bind:value={customer.email}>
+            <div class="error">{errors.email}</div>
         </div>
         <div class="half-field right">
             <label for="">Phone No.</label>
-            <input type="text">
+            <input type="text" bind:value={customer.phoneNo}>
+            <div class="error">{errors.phoneNo}</div>
         </div>
         <div class="full-field">
             <label for="">Company Address</label>
-            <input type="text" placeholder="Address line 1">
-            <input type="text" placeholder="Address line 2">
+            <input type="text" placeholder="Address line 1" bind:value={customer.address.line1}>
+            <div class="error">{errors.address.line1}</div>
+            <input type="text" placeholder="Address line 2" bind:value={customer.address.line2}>
+            <div class="error">{errors.address.line2}</div>
             <div class="half-field left">
-                <input type="text" placeholder="City">
+                <input type="text" placeholder="City" bind:value={customer.address.city}>
+                <div class="error">{errors.address.city}</div>
             </div>
             <div class="half-field right">
-                <input type="text" placeholder="State">
+                <input type="text" placeholder="State" bind:value={customer.address.state}>
+                <div class="error">{errors.address.state}</div>
             </div>
             <div class="half-field left">
-                <input type="text" placeholder="Postal / Zip Code">
+                <input type="text" placeholder="Postal / Zip Code" bind:value={customer.address.zipCode}>
+                <div class="error">{errors.address.zipCode}</div>
             </div>
-            <div class="half-field">
-                <select>
+            <div class="half-field ">
+                <select bind:value={customer.address.country}>
                     <option value="">Select Country</option>
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
@@ -279,17 +405,23 @@
                     <option value="Zambia">Zambia</option>
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
+                <div class="error">{errors.address.country}</div>
             </div>
         </div>
+        <!-- <div class="button"> -->
+            <Button flat={true} type="secondary">Add Customer</Button>
+        <!-- </div> -->
     </form>
-    <br><br>
 </div>
 
 <style>
-     .onboard-form {
-            width: 80%;
-            margin: 0 auto;
-        }
+    form{
+        display: flex; justify-content: center; flex-wrap: wrap;
+    }
+    .onboard-form {
+        width: 80%;
+        margin: 0 auto;
+    }
         .half-field {
             width: 45%;
             float: left;
@@ -300,6 +432,8 @@
             clear: both;
             box-sizing: border-box;
             margin-bottom: 15px;
+            margin-left: 2.5%;
+            margin-right: 2.5%;
         }
         input[type="text"], input[type="email"] {
             width: 100%;
@@ -327,4 +461,10 @@
             margin-left: 11%;
             height: 40px;
         }
+        .error{
+        font-weight: bold;
+        font-size: 12px;
+        color: #d91b42;
+        margin-bottom: 5px;
+    }
 </style>
