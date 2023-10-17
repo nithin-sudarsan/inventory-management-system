@@ -2,6 +2,7 @@
     import Button from "../shared/Button.svelte";
     import CustomerStores from "../stores/CustomerStores";
     import { createEventDispatcher } from "svelte";
+    import shortid from 'shortid';
 
     let dispatch = createEventDispatcher();
     let valid=false;
@@ -105,17 +106,39 @@
             errors.address.country='';
         }
 
+
         // add new poll if valid true
         if(valid){
-            let customerDetail={...customer};
+            // Generate a unique ID based on the company name
+            const uniqueId = generateUniqueId(customer.companyName, customer.phoneNo);
+            let customerDetail = { ...customer, id: uniqueId };
 
             //save poll to store
             CustomerStores.update(currentCustomers=>{
                 console.log([customerDetail, ...currentCustomers]);
                 return [customerDetail, ...currentCustomers];
-            })
+            });
             dispatch('add');
         }
+    };
+    const generateUniqueId = (companyName, phoneNo) => {
+        const prefix = companyName.substring(0, 3).toUpperCase(); // Take the first 3 characters of the company name
+        const postfix =phoneNo.substring(0,4);
+
+        let uniqueId = '';
+        do {
+            const randomDigits = Math.floor(10000 + Math.random() * 90000); // Generate a random 5 or 6 digit number
+            uniqueId = `${prefix}${randomDigits}`.substring(0, 6); // Concatenate the company name prefix with the random digits and truncate to 6 characters
+            uniqueId=`${uniqueId}${postfix}`;
+        } while (isIdNotUnique(uniqueId)); // Check if the ID is unique
+
+        return uniqueId;
+    };
+
+    const isIdNotUnique = (id) => {
+        // Logic to check if the ID already exists in the store or in the list of previously generated IDs
+        // Add your logic to check for uniqueness here
+        return false; // Placeholder logic; replace with your own uniqueness check
     };
 </script>
 

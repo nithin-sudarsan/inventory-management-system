@@ -7,13 +7,16 @@
 
 
 	let items=["Dashboard", "Onboard Customer","Add Containers"];
-	let activeItem="Onboard Customer";
+	let activeItem="Dashboard";
 
 	console.log(activeItem);
 	
 	const tabChange=(e)=>{
 		activeItem=e.detail;
 	}
+	const handleAdd=(e)=>{
+		activeItem="Dashboard";
+	};
 </script>
 
 <Header {activeItem} {items} on:tabChange2={tabChange}/>
@@ -21,7 +24,7 @@
 	{#if activeItem==="Dashboard"}
 		<Dashboard/>
 	{:else if activeItem === "Onboard Customer"}
-		<OnboardCustomer />
+		<OnboardCustomer on:add={handleAdd}/>
 	{:else if activeItem === "Add Containers"}
 		<AddContainers />
 	{/if}

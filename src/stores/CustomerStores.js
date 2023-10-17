@@ -2,17 +2,18 @@ import { writable } from "svelte/store";
 
 const CustomerStores = writable([
     {
-        "company-name":"Google",
-        "person-inchanrge":"Alex",
-        "email":"alex@google.com",
-        "phone-no":"1234567890",
-        "Address":{
-            "line1": "776 Dennison Street",
-            "line2": " French Camp",
-            "city" : "San Diego",
-            "state" : "california",
-            "zip-code": "95231",
-            "country" : "United States"
+        "id":"GOO9961234",
+        "companyName":"Google",
+        "personIncharge":"alex",
+        "email":"nithinsudarsan740@gmail.com",
+        "phoneNo":"1234567890",
+        "address":{
+            "line1": "Maurishka Park, Kodialbail",
+            "line2": "PVS",
+            "city" : "Mangalore",
+            "state" : "karnataka",
+            "zipCode": "95231",
+            "country" : "India"
         }
     },
 ]);

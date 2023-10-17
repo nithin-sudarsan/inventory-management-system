@@ -16,6 +16,7 @@
         padding: 8px 12px ;
         font-weight: bold;
         box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+        display: block;
     }
     .primary{
         background: #d91b42;
