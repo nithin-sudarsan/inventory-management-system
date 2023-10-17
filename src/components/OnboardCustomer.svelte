@@ -118,6 +118,7 @@
                 console.log([customerDetail, ...currentCustomers]);
                 return [customerDetail, ...currentCustomers];
             });
+            alert("Customer onboarded successfully!");
             dispatch('add');
         }
     };
