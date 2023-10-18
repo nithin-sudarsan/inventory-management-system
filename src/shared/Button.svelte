@@ -39,4 +39,11 @@
         color: #0003E9;
         border: 2px solid #0003E9;
     }
+    .ternary{
+        background: #e9e9e9;
+        color: rgb(59, 59, 59);
+        font-weight: normal;
+        padding: 10px 25px;
+        border-radius: 8px;
+    }
 </style>

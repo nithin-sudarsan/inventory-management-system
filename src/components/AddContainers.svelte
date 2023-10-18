@@ -86,7 +86,7 @@
 
             //save poll to store
             ContainerStores.update(currentContainers=>{
-                console.log([containerDetails, ...currentContainers]);
+                // console.log([containerDetails, ...currentContainers]);
                 return [container, ...currentContainers];
             });
             alert("Container added successfully!");
