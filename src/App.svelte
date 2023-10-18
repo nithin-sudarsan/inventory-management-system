@@ -7,7 +7,7 @@
 
 
 	let items=["Dashboard", "Onboard Customer","Add Containers"];
-	let activeItem="Dashboard";
+	let activeItem="Add Containers";
 
 	console.log(activeItem);
 	
